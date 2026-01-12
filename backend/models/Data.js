@@ -1,9 +1,11 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-module.exports = mongoose.model("Data", new mongoose.Schema({
+const DataSchema = new mongoose.Schema({
   districtId: String,
   assemblyId: String,
   party: String,
   votes: Number,
   voteShare: Number
-}));
+});
+
+export default mongoose.model("Data", DataSchema);

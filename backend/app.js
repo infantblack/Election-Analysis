@@ -1,17 +1,26 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
+import express from "express";
+import mongoose from "mongoose";
+import cors from "cors";
+import dotenv from "dotenv";
 
-const uploadRoutes = require("./routes/upload.routes");
-const dataRoutes = require("./routes/data.routes");
+import uploadRoutes from "./routes/upload.routes.js";
+import dataRoutes from "./routes/data.routes.js";
+
+dotenv.config();
 
 const app = express();
-app.use(cors());
+
+app.use(cors({
+  origin: process.env.CLIENT_URL
+}));
+
 app.use(express.json());
 
-mongoose.connect("mongodb://localhost:27017/tn_elections");
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB connected"))
+  .catch(err => console.error(err));
 
 app.use("/api", uploadRoutes);
 app.use("/api", dataRoutes);
 
-module.exports = app;
+export default app;

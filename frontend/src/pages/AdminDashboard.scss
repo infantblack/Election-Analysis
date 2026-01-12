@@ -1,0 +1,72 @@
+// Variables for easy customization
+$comet-red: #ff4b2b;
+$comet-blue: #3b82f6;
+$tail-length: 120px;
+
+.comet-container {
+  position: relative;
+  background-color: #ffffff;
+  z-index: 1;
+
+  // The Vertical Comet Border
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 4px; // Thickness of the comet line
+    background: linear-gradient(to bottom, $comet-red, $comet-blue);
+    box-shadow: 0 0 15px rgba($comet-blue, 0.5); // Adds a slight glow
+  }
+
+  // The Transparency Tail fading to the right
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 100%; // Starts exactly where the border ends
+    bottom: 0;
+    width: $tail-length;
+    pointer-events: none;
+    z-index: -1;
+    
+    // Gradient creates the "Transparency Line" effect
+    background: linear-gradient(
+      to right, 
+      rgba($comet-blue, 0.15) 0%, 
+      rgba($comet-blue, 0.05) 50%, 
+      transparent 100%
+    );
+    
+    // Optional: add a "streak" line in the middle of the tail
+    border-top: 1px solid rgba($comet-blue, 0.1);
+    border-bottom: 1px solid rgba($comet-red, 0.1);
+  }
+}
+
+// Layout helper for the Dashboard
+.admin-layout {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+
+  .left-panel {
+    width: 45%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background-color: #FCF2FD;
+  }
+
+  .right-panel {
+    width: 55%;
+    background-color: #FAFAF6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+}

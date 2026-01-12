@@ -1,7 +1,15 @@
-exports.validateFiles = (files) => {
-  if (!files || files.length === 0) throw new Error("No files uploaded");
+export const validateFiles = (files) => {
+  if (!files || files.length === 0) {
+    throw new Error("No files uploaded");
+  }
 
-  files.forEach(f => {
-    if (f.size > 2 * 1024 * 1024) throw new Error("File too large");
+  if (files.length > Number(process.env.MAX_FILE_COUNT)) {
+    throw new Error("Too many files uploaded");
+  }
+
+  files.forEach(file => {
+    if (file.size > Number(process.env.MAX_FILE_SIZE)) {
+      throw new Error("File size exceeds limit");
+    }
   });
 };

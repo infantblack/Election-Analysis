@@ -1,9 +1,16 @@
-const router = require("express").Router();
-const multer = require("multer");
-const uploadController = require("../controllers/upload.controller");
+import { Router } from "express";
+import multer from "multer";
+import { uploadFiles } from "../controllers/upload.controller.js";
 
-const upload = multer({ dest: "uploads/" });
+const router = Router();
 
-router.post("/upload", upload.array("files", 2), uploadController.upload);
+const upload = multer({
+  dest: process.env.UPLOAD_DIR || "uploads/",
+  limits: {
+    fileSize: Number(process.env.MAX_FILE_SIZE)
+  }
+});
 
-module.exports = router;
+router.post("/upload", upload.array("files", 2), uploadFiles);
+
+export default router;

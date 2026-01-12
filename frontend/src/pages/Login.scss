@@ -1,0 +1,49 @@
+$comet-red: #ff4b2b;
+$comet-blue: #3b82f6;
+
+.login-page-container {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #0f172a; // Deep slate simple background
+  overflow: hidden;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 450px;
+  padding: 40px;
+  background-color: #ffffff !important;
+  border-radius: 16px !important;
+  position: relative;
+  
+  &.comet-effect {
+    // The main Comet Line (Left side)
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 15%;
+      bottom: 15%;
+      width: 6px;
+      border-radius: 0 4px 4px 0;
+      background: linear-gradient(to bottom, $comet-red, $comet-blue);
+      box-shadow: -4px 0 15px rgba($comet-red, 0.4);
+    }
+
+    // The Transparency Tail (Fading to the right across the card)
+    &::after {
+      content: "";
+      position: absolute;
+      left: 6px;
+      top: 15%;
+      bottom: 15%;
+      right: 0;
+      z-index: 0;
+      pointer-events: none;
+      background: linear-gradient(to right, rgba($comet-blue, 0.08), transparent);
+    }
+  }
+}
