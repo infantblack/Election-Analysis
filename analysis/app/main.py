@@ -1,21 +1,28 @@
+import logging
+import os
+import sys
+import tempfile
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-import tempfile
-import os
-
-from file_parser import parse_file
-from schema_service import generate_schema
-from models import SchemaResponse
-
 from dotenv import load_dotenv
-import os
+
+from app.file_parser import parse_file
+from app.schema_service import generate_schema
+from app.models import SchemaResponse
 
 load_dotenv()
 
-MAX_FILE_SIZE = int(os.getenv("MAX_FILE_SIZE", 2097152))
-ALLOWED_TYPES = os.getenv("ALLOWED_FILE_TYPES").split(",")
-REQUIRED_COLUMNS = os.getenv("REQUIRED_COLUMNS").split(",")
-
+# ---------------- LOGGING ----------------
+# Use a simpler StreamHandler to avoid fileno encoding issues on Windows
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    handlers=[
+        logging.StreamHandler(sys.stdout),
+        logging.FileHandler("app_execution.log", encoding="utf-8")
+    ]
+)
+logger = logging.getLogger("ElectionProcessor")
 
 app = FastAPI(title="Election Data Processor")
 
@@ -27,26 +34,36 @@ app.add_middleware(
 )
 
 @app.post("/process", response_model=SchemaResponse)
-async def process_file(file: UploadFile = File(...)):
-    if file.size and file.size > MAX_FILE_SIZE:
-        raise HTTPException(status_code=400, detail="File too large")
+async def process_file(files: UploadFile = File(...)): # Changed 'file' to 'files' to match your React append
+    logger.info(f"Received file upload: {files.filename}")
+
+    content = await files.read()
+    file_size = len(content)
+    logger.info(f"File content read. Size: {file_size} bytes")
+
+    if file_size == 0:
+        logger.warning(f"Rejecting empty file: {files.filename}")
+        raise HTTPException(status_code=400, detail="Empty file received")
+
+    # ... rest of your logic ...
+    ext = os.path.splitext(files.filename)[1].lower()
     
-    if not any(file.filename.endswith(ext) for ext in ALLOWED_TYPES):
-        raise HTTPException(status_code=400, detail="Invalid file type")
-
-    suffix = os.path.splitext(file.filename)[1]
-
-    with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as temp:
-        content = await file.read()
+    with tempfile.NamedTemporaryFile(delete=False, suffix=ext) as temp:
         temp.write(content)
         temp_path = temp.name
 
     try:
         df = parse_file(temp_path)
-        schema = generate_schema(df)
-        data = df.to_dict(orient="records")
-        return {"schema": schema, "data": data}
+        generated_schema = generate_schema(df)
+        
+        logger.info(f"Successfully processed {files.filename}")
+        return {
+            "generated_schema": generated_schema,
+            "data": df.to_dict(orient="records")
+        }
     except Exception as e:
+        logger.error(f"Processing failed: {str(e)}", exc_info=True)
         raise HTTPException(status_code=400, detail=str(e))
     finally:
-        os.remove(temp_path)
+        if os.path.exists(temp_path):
+            os.remove(temp_path)

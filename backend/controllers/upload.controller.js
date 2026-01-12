@@ -5,19 +5,21 @@ import DataModel from "../models/Data.model.js";
 
 export const uploadFiles = async (req, res) => {
   try {
+    console.log(req.files,'request');
+    
     validateFiles(req.files);
 
-    const pythonResult = await sendToPythonService(req.files[0].path);
+    const pythonResult = await sendToPythonService(req.files[0]);
 
     await SchemaModel.create({
-      fields: pythonResult.schema
+      fields: pythonResult.generated_schema
     });
 
     await DataModel.insertMany(pythonResult.data);
 
     res.status(200).json({
       success: true,
-      schema: pythonResult.schema
+      schema: pythonResult.generated_schema
     });
   } catch (error) {
     res.status(400).json({

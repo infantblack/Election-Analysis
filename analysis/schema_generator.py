@@ -11,10 +11,10 @@ elif file_path.endswith(".json"):
 else:
     raise Exception("Unsupported file")
 
-schema = {col: str(dtype) for col, dtype in df.dtypes.items()}
+generated_schema = {col: str(dtype) for col, dtype in df.dtypes.items()}
 data = df.to_dict(orient="records")
 
 print(json.dumps({
-    "schema": schema,
+    "generated_schema": generated_schema,
     "data": data
 }))
