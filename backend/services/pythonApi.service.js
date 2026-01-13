@@ -6,7 +6,7 @@ export const sendToPythonService = async (file) => {
   const formData = new FormData();
 
   formData.append(
-    "files",
+    "file",
     fs.createReadStream(file.path),
     {
       filename: file.originalname,
@@ -18,8 +18,9 @@ export const sendToPythonService = async (file) => {
     process.env.PYTHON_SERVICE_URL, // http://localhost:8000/process
     formData,
     {
-      headers: formData.getHeaders(),
-      maxBodyLength: Infinity
+      headers: formData.getHeaders(), // ✅ THIS IS CRITICAL
+      maxBodyLength: Infinity,
+      maxContentLength: Infinity
     }
   );
 

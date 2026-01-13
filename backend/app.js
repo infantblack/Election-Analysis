@@ -3,10 +3,16 @@ import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 
+import path from "path";
+
 import uploadRoutes from "./routes/upload.routes.js";
 import dataRoutes from "./routes/data.routes.js";
 
-dotenv.config();
+
+dotenv.config({
+  path: path.resolve(process.cwd(), ".env"),
+  debug: false
+});
 
 const app = express();
 

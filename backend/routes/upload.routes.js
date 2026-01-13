@@ -7,9 +7,10 @@ const router = Router();
 const upload = multer({
   dest: process.env.UPLOAD_DIR || "upload/",
   limits: {
-    fileSize: Number(process.env.MAX_FILE_SIZE)
+    fileSize: Number(2097152)
   }
 });
-router.post("/upload", upload.array("files", 2), uploadFiles);
+
+router.post("/upload", upload.array("file", 2), uploadFiles);
 
 export default router;
