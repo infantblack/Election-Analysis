@@ -26,16 +26,13 @@ const handleAxiosError = (error) => {
 };
 
 // --- API Methods ---
-
 export const uploadFiles = async (formData) => {
   try {
-    const response = await API.post("/upload", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
+    const response = await API.post("/upload", formData);
     return response.data;
   } catch (error) {
     const message = handleAxiosError(error);
-    return new Error(message);
+    throw new Error(message);
   }
 };
 

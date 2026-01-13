@@ -8,44 +8,39 @@ $tail-length: 120px;
   background-color: #ffffff;
   z-index: 1;
 
-  // The Vertical Comet Border
   &::before {
     content: "";
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
-    width: 4px; // Thickness of the comet line
+    width: 4px;
     background: linear-gradient(to bottom, $comet-red, $comet-blue);
-    box-shadow: 0 0 15px rgba($comet-blue, 0.5); // Adds a slight glow
+    box-shadow: 0 0 15px rgba($comet-blue, 0.5);
   }
 
-  // The Transparency Tail fading to the right
   &::after {
     content: "";
     position: absolute;
     top: 0;
-    left: 100%; // Starts exactly where the border ends
+    left: 100%;
     bottom: 0;
     width: $tail-length;
     pointer-events: none;
     z-index: -1;
-    
-    // Gradient creates the "Transparency Line" effect
+
     background: linear-gradient(
-      to right, 
-      rgba($comet-blue, 0.15) 0%, 
-      rgba($comet-blue, 0.05) 50%, 
+      to right,
+      rgba($comet-blue, 0.15) 0%,
+      rgba($comet-blue, 0.05) 50%,
       transparent 100%
     );
-    
-    // Optional: add a "streak" line in the middle of the tail
+
     border-top: 1px solid rgba($comet-blue, 0.1);
     border-bottom: 1px solid rgba($comet-red, 0.1);
   }
 }
 
-// Layout helper for the Dashboard
 .admin-layout {
   display: flex;
   height: 100vh;
@@ -65,8 +60,18 @@ $tail-length: 120px;
     width: 55%;
     background-color: #FAFAF6;
     display: flex;
+    flex-direction: column;
+
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
+
     padding: 2rem;
+
+    // ✅ SCROLL ENABLED HERE
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    // Optional: smoother scrolling
+    scroll-behavior: smooth;
   }
 }

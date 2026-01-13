@@ -5,7 +5,7 @@ import ErrorFallback from "../components/ErrorFallback";
 import { CircularProgress, Box, Button, Typography, Stack } from "@mui/material";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
-export default function FileUpload({ onSchemaGenerated }) {
+export default function FileUpload({ onSchemaGenerated,onEleData }) {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -30,7 +30,7 @@ export default function FileUpload({ onSchemaGenerated }) {
         alert(`${f.name} is too large (Max 2MB)`);
         return;
       }
-      formData.append("files", f);
+      formData.append("file", f);
     }
 
     setLoading(true);
@@ -38,7 +38,10 @@ export default function FileUpload({ onSchemaGenerated }) {
 
     try {
       const res = await uploadFiles(formData);
-      onSchemaGenerated(res.schema); 
+      console.log(res,">>>>>>>>>>>>>>>>");
+      
+      onSchemaGenerated(res.schema);
+      onEleData(res.data);
     } catch (err) {
       setError(err.message);
     } finally {
