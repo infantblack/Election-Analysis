@@ -37,9 +37,7 @@ export default function FileUpload({ onSchemaGenerated,onEleData }) {
     setError(null);
 
     try {
-      const res = await uploadFiles(formData);
-      console.log(res,">>>>>>>>>>>>>>>>");
-      
+      const res = await uploadFiles(formData);     
       onSchemaGenerated(res.schema);
       onEleData(res.data);
     } catch (err) {

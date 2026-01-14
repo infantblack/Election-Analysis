@@ -1,0 +1,26 @@
+.election-overview {
+  min-height: 100vh;
+  padding: 32px;
+  background-color: #fafafa;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0 32px 0;
+}
+
+.search-input {
+  min-width: 280px;
+}
+
+.stats-grid {
+  margin-top: 16px;
+}
+.stats-card {
+  padding: 16px;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

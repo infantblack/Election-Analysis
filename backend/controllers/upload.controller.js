@@ -34,38 +34,3 @@ export const uploadFiles = async (req, res) => {
     });
   }
 };
-
-
-// export const uploadFiles = async (req, res) => {
-//   try {
-//     validateFiles(req.files);
-
-//     const pythonResult = await sendToPythonService(req.files[0]);
-
-//     // 1. Store Schema
-//     const savedSchema = await SchemaModel.create({
-//       fields: pythonResult.generated_schema
-//     });
-
-//     // 2. Map data to include the schema ID (Optional but recommended for linking)
-//     const dataWithRef = pythonResult.data.map(row => ({
-//       ...row,
-//       schemaId: savedSchema._id // Links this row to the specific upload/schema
-//     }));
-
-//     // 3. Insert into DataModel
-//     // If DataModel has { strict: false }, all your keys will now appear!
-//     await DataModel.insertMany(dataWithRef);
-
-//     res.status(200).json({
-//       success: true,
-//       schema: pythonResult.generated_schema,
-//       data: pythonResult.data
-//     });
-//   } catch (error) {
-//     res.status(400).json({
-//       success: false,
-//       message: error.message
-//     });
-//   }
-// };

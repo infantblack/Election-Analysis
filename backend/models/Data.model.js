@@ -1,11 +1,13 @@
 import mongoose from "mongoose";
 
 const DataSchema = new mongoose.Schema({
-  districtId: String,
-  assemblyId: String,
-  party: String,
-  votes: Number,
-  voteShare: Number
+    district: String,
+    assembly: String,
+    constituency: String,
+    booth_no: Number,
+    candidate: String,
+    party: String,
+    votes: Number
 });
 
 export default mongoose.model("Data", DataSchema);

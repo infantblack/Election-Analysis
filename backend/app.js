@@ -7,6 +7,7 @@ import path from "path";
 
 import uploadRoutes from "./routes/upload.routes.js";
 import dataRoutes from "./routes/data.routes.js";
+import electionRoutes from "./routes/election.routes.js";
 
 
 dotenv.config({
@@ -28,5 +29,6 @@ mongoose.connect(process.env.MONGO_URI)
 
 app.use("/api", uploadRoutes);
 app.use("/api", dataRoutes);
+app.use("/api/election", electionRoutes);
 
 export default app;

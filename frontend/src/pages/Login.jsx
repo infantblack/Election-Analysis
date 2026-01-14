@@ -11,7 +11,7 @@ import {
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import "./Login.scss";
 
-export default function Login({ onLogin }) {
+export default function Login() {
   const [user, setUser] = useState("");
   const [pass, setPass] = useState("");
 
@@ -19,7 +19,7 @@ export default function Login({ onLogin }) {
     e.preventDefault();
     // Your bypass logic
     if (user === "" && pass === "") {
-      onLogin(true);
+      // onLogin(true);
     } else {
       alert("Invalid credentials");
     }
